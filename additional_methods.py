@@ -9,10 +9,6 @@ Created on Sat Mar 10 12:53:16 2018
 from telebot import types
 
 import dbworkerButton as db
-import addButton
-button1 = "button1.vdb"
-button2 = "button2.vdb"
-b = ["", "", "", "", "", "", "", ""]
 
 
 
@@ -28,7 +24,6 @@ def set_one_button(answer, text_button, bot, message):
         button = types.ReplyKeyboardMarkup()
         button.row(text_button)
         bot.send_message(message.chat.id, answer, reply_markup = button)
-        db.set_button(message, button1, text_button)
 
 #две кнопки        
 def set_two_buttons(answer, text_button_1, text_button_2, bot, message):

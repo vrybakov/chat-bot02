@@ -11,7 +11,7 @@ import test_class
 import additional_methods as add_m
 import dbworker
 import config
-
+import StepNumber
 bot = telebot.TeleBot(config.token)
 
 
@@ -19,13 +19,14 @@ bot = telebot.TeleBot(config.token)
 def start_bot(message):
     add_m.set_two_buttons("Привет!\nХочешь начать обучение гитаре?", "Да", "Нет", bot, message)
     
-    dbworker.set_state(message.chat.id, config.Step_bot.STEP1.value)
+    StepNumber.newStep.add(config.Step_bot.STEP1.value)          
+#    dbworker.set_state(message.chat.id, config.Step_bot.STEP1.value)
     
 
 @bot.message_handler(content_types = ['text'])
 def test(message):
     
-    obj = test_class.TestProcessingStage(message, dbworker.get_current_state(message.chat.id), bot, "", False)
+    obj = test_class.TestProcessingStage(message, StepNumber.newStep.get(), bot, "", False)
 #    obj.stepS(p_a_m.a, "sad")
     obj.answer_person("Да", config.Step_bot.STEP1.value).set_work_step(p_a_m.step1v1)
     obj.answer_person("Нет", config.Step_bot.STEP1.value).set_work_step(p_a_m.step1v2)
