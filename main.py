@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """
 Created on Tue Feb 13 21:06:28 2018
 
@@ -12,7 +12,7 @@ import additional_methods as add_m
 import dbworker
 import config
 import StepNumber
-bot = telebot.TeleBot(config.token)
+bot = telebot.TeleBot("481180883:AAFjGPMJVPKL0xaH2MksG4GlH5bprwwxdpI")
 
 
 @bot.message_handler(commands = ['start'])
