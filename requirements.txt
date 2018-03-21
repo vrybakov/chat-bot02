@@ -9,7 +9,7 @@ portend==2.2
 pypiwin32==223
 pyTelegramBotAPI==3.6.1
 pytz==2018.3
-pywin32==223
+
 requests==2.18.4
 six==1.11.0
 tempora==1.11
