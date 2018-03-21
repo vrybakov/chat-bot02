@@ -11,7 +11,37 @@ import test_class
 import additional_methods as add_m
 import config
 import StepNumber
+
+from flask import Flask, request
+import logging
+import os
+#
+##
+
+
+
+
+
+
 bot = telebot.TeleBot(config.token)
+
+
+
+
+
+
+#
+#@bot.message_handler(commands = ['start'])
+#def start_bot(message):
+#    bot.send_message(message.chat.id, "Привет")
+
+
+
+#@bot.message_handler(func=lambda message: True, content_types=['text'])
+#def echo_message(message):
+#    bot.reply_to(message.chat.id, message.text)
+
+
 
 
 @bot.message_handler(commands = ['start'])
@@ -19,7 +49,6 @@ def start_bot(message):
     add_m.set_two_buttons("Привет!\nХочешь начать обучение гитаре?", "Да", "Нет", bot, message)
     
     StepNumber.newStep.add(config.Step_bot.STEP1.value)          
-#    dbworker.set_state(message.chat.id, config.Step_bot.STEP1.value)
     
 
 @bot.message_handler(content_types = ['text'])
@@ -57,7 +86,31 @@ def test(message):
     
     obj.unsuitable()
 
-#    obj.step3()
     
-if __name__ == '__main__':
-    bot.polling(none_stop = True) 
+
+# Проверим, есть ли переменная окружения Хероку (как ее добавить смотрите ниже)
+if "HEROKU" in list(os.environ.keys()):
+    logger = telebot.logger
+    telebot.logger.setLevel(logging.INFO)
+
+    server = Flask(__name__)
+    @server.route("/bot", methods=['POST'])
+    def getMessage():
+        bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
+        return "!", 200
+    @server.route("/")
+    def webhook():
+        bot.remove_webhook()
+        bot.set_webhook(url="https://dashboard.heroku.com/apps/calm-ravine-51322") # этот url нужно заменить на url вашего Хероку приложения
+        return "?", 200
+    server.run(host="0.0.0.0", port=os.environ.get('PORT', 80))
+else:
+    # если переменной окружения HEROKU нету, значит это запуск с машины разработчика.  
+    # Удаляем вебхук на всякий случай, и запускаем с обычным поллингом.
+    bot.remove_webhook()
+    bot.polling(none_stop=True)
+
+
+
+#if __name__ == '__main__':
+#    bot.polling(none_stop = True) 

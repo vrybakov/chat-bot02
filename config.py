@@ -8,8 +8,6 @@ Created on Tue Feb 20 23:57:38 2018
 from enum import Enum
 
 token = '481180883:AAFtTEYuijfdI1K_-rznzxYbUUrNwfQBwno'
-db_file = "database.vdb"
-db_file_copy = "database_copy.vdb"
 
     
 class Step_bot(Enum):
